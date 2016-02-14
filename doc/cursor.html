@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Module cursor</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module cursor</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>Client side DB cursor represents record set of query.
+<p>Copyright © 2010-2014 Alexei Krasnopolski</p>
+
+<p><b>Version:</b> 1.2.8</p>
+<p><b>Introduced in:</b> 2014-03-08</p>
+<p><b>Authors:</b> Alexei Krasnopolski (<a href="mailto:krasnop@bellsouth.net"><tt>krasnop@bellsouth.net</tt></a>) [<em>web site:</em> <tt><a href="http://krasnopolski.org/" target="_top">http://krasnopolski.org/</a></tt>].</p>
+
+<h2><a name="description">Description</a></h2>Client side DB cursor represents record set of query. Cursor allows easy navigate througth record set and retrieve
+  field values by name or index. Cursor owns to process created it and can not access concurrently.
+ 
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#back-1">back/1</a></td><td>Move cursor pointer back to the previous position.</td></tr>
+<tr><td valign="top"><a href="#foreach-2">foreach/2</a></td><td>Returns list of values of <code>Name</code> field from all rows of record set.</td></tr>
+<tr><td valign="top"><a href="#get-2">get/2</a></td><td>Get value of field with <code>Name</code>.</td></tr>
+<tr><td valign="top"><a href="#new-1">new/1</a></td><td>Creates new cursor from result record set obtained after db query.</td></tr>
+<tr><td valign="top"><a href="#new-2">new/2</a></td><td>Creates new cursor with regestered name from result record set obtained after db query.</td></tr>
+<tr><td valign="top"><a href="#next-1">next/1</a></td><td>Move cursor pointer to the next position.</td></tr>
+<tr><td valign="top"><a href="#reset-1">reset/1</a></td><td>Reset cursor pointer to the beginning position.</td></tr>
+<tr><td valign="top"><a href="#set-2">set/2</a></td><td>Set <code>I</code> as a new positions of the cursor pointer.</td></tr>
+<tr><td valign="top"><a href="#size-1">size/1</a></td><td>Get size (number of rows) of the cursor.</td></tr>
+<tr><td valign="top"><a href="#skip-2">skip/2</a></td><td>Skip <code>I</code> positions and set cursor pointer to the position.</td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="new-1">new/1</a></h3>
+<div class="spec">
+<p><tt>new(DB_result_set::tuple()) -&gt; pid()</tt><br></p>
+</div><p>Creates new cursor from result record set obtained after db query.
+ </p>
+
+<h3 class="function"><a name="new-2">new/2</a></h3>
+<div class="spec">
+<p><tt>new(Name::atom(), DB_result_set::tuple()) -&gt; pid()</tt><br></p>
+</div><p>Creates new cursor with regestered name from result record set obtained after db query.
+ </p>
+
+<h3 class="function"><a name="size-1">size/1</a></h3>
+<div class="spec">
+<p><tt>size(CursorId) -&gt; integer()</tt>
+<ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+</div><p>Get size (number of rows) of the cursor.
+ </p>
+
+<h3 class="function"><a name="next-1">next/1</a></h3>
+<div class="spec">
+<p><tt>next(CursorId) -&gt; boolean()</tt>
+<ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+</div><p>Move cursor pointer to the next position. Returns false if pointer already on the end of cursor.
+ </p>
+
+<h3 class="function"><a name="skip-2">skip/2</a></h3>
+<div class="spec">
+<p><tt>skip(CursorId, I::integer()) -&gt; integer()</tt>
+<ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+</div><p>Skip <code>I</code> positions and set cursor pointer to the position. Returns number actualy skipped positions.
+ </p>
+
+<h3 class="function"><a name="back-1">back/1</a></h3>
+<div class="spec">
+<p><tt>back(CursorId) -&gt; boolean()</tt>
+<ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+</div><p>Move cursor pointer back to the previous position. Returns false if pointer already on the beginning of cursor.
+ </p>
+
+<h3 class="function"><a name="set-2">set/2</a></h3>
+<div class="spec">
+<p><tt>set(CursorId, I::integer()) -&gt; boolean()</tt>
+<ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+</div><p>Set <code>I</code> as a new positions of the cursor pointer. Returns false if <code>I</code> is out of the range.
+ </p>
+
+<h3 class="function"><a name="reset-1">reset/1</a></h3>
+<div class="spec">
+<p><tt>reset(CursorId) -&gt; boolean()</tt>
+<ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+</div><p>Reset cursor pointer to the beginning position.
+ </p>
+
+<h3 class="function"><a name="get-2">get/2</a></h3>
+<div class="spec">
+<p><tt>get(CursorId, Name) -&gt; Result</tt>
+<ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li><li><tt>Name = string() | integer()</tt></li><li><tt>Result = integer() | float() | string() | binary() | #mysql_time{} | #mysql_decimal{}</tt></li></ul></p>
+</div><p>Get value of field with <code>Name</code>. <code>Name</code> can be string name of field or index in row list.
+ </p>
+
+<h3 class="function"><a name="foreach-2">foreach/2</a></h3>
+<div class="spec">
+<p><tt>foreach(CursorId, Name) -&gt; Result</tt>
+<ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li><li><tt>Name = string() | integer()</tt></li><li><tt>Result = [integer() | float() | string() | binary() | #mysql_time{} | #mysql_decimal{}]</tt></li></ul></p>
+</div><p>Returns list of values of <code>Name</code> field from all rows of record set. <code>Name</code> can be string name of field or index in row list.
+ </p>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc, Feb 14 2016, 03:18:59.</i></p>
+</body>
+</html>

@@ -1,0 +1,7 @@
+backend_version=R15
+eclipse.preferences.version=1
+external_includes=
+external_modules=
+include_dirs=include;
+output_dir=_build/default/lib/mysql_client/ebin
+source_dirs=test;examples;src;

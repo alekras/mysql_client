@@ -1,0 +1,6 @@
+%% encoding: UTF-8
+{application,mysql_client}.
+{modules,[conn_srv,connection,connection_factory,cursor,datasource,example,
+          helper_common,helper_connection,helper_statement,io_send_cmd,
+          io_socket,my,packet_parser,packet_parser_binary,
+          packet_parser_string,packet_response]}.
