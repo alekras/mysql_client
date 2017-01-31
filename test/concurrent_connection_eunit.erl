@@ -68,8 +68,8 @@ run_consumer(X, C) -> {timeout, 100, fun() ->
 		host = ?TEST_SERVER_HOST_NAME, 
 		port = ?TEST_SERVER_PORT, 
 		database = "eunitdb", 
-		user = "root", 
-		password = "root",
+		user = ?TEST_USER, 
+		password = ?TEST_PASSWORD,
 		flags = #client_options{trans_isolation_level = serializable}
 	}),
   Conn = datasource:get_connection(serializable_ds),

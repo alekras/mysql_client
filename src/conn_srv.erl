@@ -131,7 +131,8 @@ handle_call({change_owner, Owner}, _, Connection) ->
 handle_call({execute_query, Query}, {Caller, _}, #connection{owner = Owner} = Connection) ->
   case Caller =:= Owner of
     true -> 
-      Value = io_send_cmd:send_cmd_packet(Connection, <<?EXEC_QUERY, (list_to_binary(Query))/binary>>),
+			Bin_Query = if is_list(Query) -> list_to_binary(Query); true -> Query end,
+			Value = io_send_cmd:send_cmd_packet(Connection, <<?EXEC_QUERY, (Bin_Query)/binary>>),
       {reply, Value, Connection};
     false -> {reply, #mysql_error{type = pooling, 
                                   source = "conn_srv:handle_call({execute_query, _}, _, _)", 

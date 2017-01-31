@@ -17,7 +17,7 @@
 -define(TEST_SERVER_HOST_NAME, "localhost").
 -define(TEST_DB_NAME, "eunitdb").
 -define(TEST_USER, "root").
--define(TEST_PASSWORD, "root").
+-define(TEST_PASSWORD, "Irina_0110").
 -define(TEST_SERVER_PORT, 3306).
 %-define(TEST_SERVER_PORT, 3307).
 %-define(TEST_SERVER_PORT, 3308).
