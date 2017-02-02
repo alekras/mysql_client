@@ -118,7 +118,7 @@ handle_response(Connection, State, [Packet | Packet_list], Metadata, Result, Stm
   case R of
     #ok_packet{} -> 
       New_metadata = Metadata#metadata{server_status = R#ok_packet.server_status},
-      handle_response(Connection, State, Packet_list, New_metadata, [R | Result], Stmt, ParMark, true);
+      handle_response(Connection, State, Packet_list, New_metadata, [R#ok_packet{server_status = undefined} | Result], Stmt, ParMark, true);
     #ok_stmt_packet{} -> 
       NCol = R#ok_stmt_packet.columns_number,
       NPar = R#ok_stmt_packet.params_number,
