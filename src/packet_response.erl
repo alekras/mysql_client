@@ -125,9 +125,7 @@ handle_response(Connection, State, [Packet | Packet_list], Metadata, Result, Stm
       New_metadata = Metadata#metadata{field_count = NCol, param_count = NPar},
       New_State = if
         (NCol > 0)   and (NPar > 0)   -> 1;
-        (NCol =:= 0) and (NPar > 0)   -> 2;
-        (NCol > 0)   and (NPar =:= 0) -> 2;
-        true -> -1
+        true -> 2
       end,
       handle_response(Connection, New_State, Packet_list, New_metadata, [R | Result], Stmt, (NPar > 0), (New_State < 0));
     #error_packet{} ->

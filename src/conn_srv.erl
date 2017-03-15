@@ -151,10 +151,9 @@ handle_call(set_trans_level, _From, Connection) ->
   Value = io_send_cmd:send_cmd_packet(Connection, <<?EXEC_QUERY, (list_to_binary(Query))/binary>>),
   {reply, Value, Connection};
 
-handle_call({select_db, DBName}, _From, Connection) ->
+handle_call({select_db, DBName}, _From, #connection{ds_def = DS_Def} = Connection) ->
   Value = io_send_cmd:send_cmd_packet(Connection, <<?SELECT_DB, (list_to_binary(DBName))/binary>>),
-  conn_pool_srv:remove(Connection),
-  {reply, Value, (Connection#connection.ds_def)#datasource{database = DBName}};
+  {reply, Value, Connection#connection{ds_def = DS_Def#datasource{database = DBName}}};
 
 handle_call({get_field_list, Table_name, Column_name}, _From, Connection) ->
   Value = io_send_cmd:send_cmd_packet(Connection, <<?GET_FIELD_LIST, (list_to_binary(Table_name))/binary, 0:8, (list_to_binary(Column_name))/binary>>),
