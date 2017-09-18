@@ -158,9 +158,9 @@ parse_handshake_init_packet([#packet{body = B}]) ->
 %% @doc Generates security token for authorization from password and scramble buffer sent by server.
 %
 get_token(Password, Scramble_buff) ->
-  CPswd = crypto_hash(list_to_binary(Password)),
-  CCPswd = crypto_hash(CPswd),
-  binary_xor(crypto_hash(<<Scramble_buff/binary, CCPswd/binary>>), CPswd).
+  CPswd = crypto:hash(sha, list_to_binary(Password)),
+  CCPswd = crypto:hash(sha, CPswd),
+  binary_xor(crypto:hash(sha, <<Scramble_buff/binary, CCPswd/binary>>), CPswd).
 
 %% @spec null_terminated_string_length(Binary::binary()) -> integer()
 %% @doc Calculates length of null terminated string at beginning of the Binary.
@@ -177,11 +177,3 @@ binary_xor(A, B) ->
   <<X:Size>> = A,
   <<Y:Size>> = B,
   <<(X bxor Y):Size>>.
-
-%% @spec crypto_hash(Bin::binary()) -> binary()
-%% @doc Hook to allow the client runs under R15 and R16 Erlang OTP. 
-%
-crypto_hash(Bin) ->
-  try crypto:hash(sha, Bin) catch
-    _:_ -> crypto:sha(Bin)
-  end.
