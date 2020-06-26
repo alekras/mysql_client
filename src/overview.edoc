@@ -56,14 +56,14 @@ To start with the client you have to complete at least first two steps below:
 <li>Install Eclipse IDE [http://www.eclipse.org/] with Erlide plugin [http://erlide.sourceforge.net/]. This is optional. 
 But I am doing developing of the software using these wonderful tools and highly recommend ones.</li>
 <li>Install OpenSSL framework (If your workstation does not have it yet) [http://www.openssl.org/] because Erlang <code>crypto</code> 
-is depended on the library. Commonly OpenSSL is already installed in Linux hosts.</li>
+is depended on the library. Commonly OpenSSL is already installed in Linux/MacOS hosts.</li>
 </ol>
 Next step is running the examples. Suppose you install MySQL server as 'localhost' that opened 3306 port for listening a TCP/IP connections from clients.
 You have to adjust root user account: set 'root'@'localhost' with 'root' password and create account 'user'@'localhost'/'user'.
 I will not teach you how using Erlang, just remind you:
 <ul>
-<li>You have to use Rebar to build project.
- Issue command <code>rebar clean get-deps compile</code>.</li>
+<li>You have to use Rebar3 to build project.
+ Issue command <code>rebar3 clean upgrade compile</code>.</li>
 <li>Start Erlang shell.</li>
 <li>Set up current directory with eshell command <code>c:cd(".../ebin")</code>.</li>
 <li>Add path for dependency <code>code:add_path(".../deps/rsrc_pool/ebin")</code>.</li>
