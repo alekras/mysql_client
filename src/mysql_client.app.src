@@ -23,7 +23,7 @@
     {registered, [datasource_sup]},
     {applications, [kernel, stdlib]},
     {mod, {my, []}},
-    {env, []}
+    {env, []},
 %% For Hex publishing
     {files, ["src", "priv", "test", "include", "doc", "rebar.config", "README.md", "README_1.md", "LiCENSE"]},
     {licenses, ["Apache-2.0"]},

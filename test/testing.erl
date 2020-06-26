@@ -21,21 +21,7 @@ do_stop(_R) ->
   ?debug_Fmt("<<< stop app return: ~p",[R]).
 
 do_setup({plain, 'DB_create_Table_create'} = X) ->
-%  ?debug_Fmt("setup test: ~p ~s", [Name, case C of plain -> ""; _ -> C end]), 
-  Database = "", %% TODO check it!
-  DS_def = #datasource{
-%    name = datasource,
-    host = ?TEST_SERVER_HOST_NAME, 
-    port = ?TEST_SERVER_PORT, 
-    database = Database, %"eunitdb", 
-    user = ?TEST_USER, 
-    password = ?TEST_PASSWORD, 
-    flags = set(X)
-  },
-  {ok, Pid} = my:new_datasource(datasource, DS_def, [{test_on_borrow, true}]),
-  Pid;
-do_setup(X) ->
-%  ?debug_Fmt("setup test: ~p ~s", [Name, case C of plain -> ""; _ -> C end]), 
+%  ?debug_Fmt("setup test: ~p", [X]), 
   Database = "eunitdb", %% TODO check it!
   DS_def = #datasource{
 %    name = datasource,
@@ -46,12 +32,26 @@ do_setup(X) ->
     password = ?TEST_PASSWORD, 
     flags = set(X)
   },
-  {ok, Pid} = my:new_datasource(datasource, DS_def, [{test_on_borrow, true}]),
+  {ok, Pid} = my:new_datasource(datasource, DS_def, [{test_on_borrow, true},{max_wait, 100}]),
+  Pid;
+do_setup(X) ->
+%  ?debug_Fmt("setup test: ~p", [X]), 
+  Database = "eunitdb", %% TODO check it!
+  DS_def = #datasource{
+%    name = datasource,
+    host = ?TEST_SERVER_HOST_NAME, 
+    port = ?TEST_SERVER_PORT, 
+    database = Database, %"eunitdb", 
+    user = ?TEST_USER, 
+    password = ?TEST_PASSWORD, 
+    flags = set(X)
+  },
+  {ok, Pid} = my:new_datasource(datasource, DS_def, [{test_on_borrow, true},{max_wait, 100}]),
   Pid.
 
 set({plain, _}) -> #client_options{};
 set({compress, _}) -> #client_options{compress = 1}.
 
 do_cleanup(_X, _Pid) ->
-%  ?debug_Fmt("teardown after: ~p ~s~n",[Name, case C of plain -> ""; _ -> C end]),
+%  ?debug_Fmt("teardown after: ~p ~p~n",[_X, _Pid]),
   datasource:close(datasource).

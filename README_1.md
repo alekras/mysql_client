@@ -150,7 +150,7 @@ Note that when we are using compression we win a packets size but lost a process
 ## Blob transfer
 
 MySQL client/server protocol allows transfer data for BLOB type field as a separate
-operation. Suppose we have a column of LONGBLOB type named as longblob_col in our sample_table above:
+operation. Suppose we have a column of LONGBLOB type named as `longblob_col` in our sample_table above:
 ``` Erlang
   CREATE TABLE testDB.sample_table (
     id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -172,7 +172,7 @@ After that we can send to server long block of data that has size of 1000000 byt
 connection:send_statement_long_parameter(Conn, Handle, 0, &lt;&lt;16#AA:8000000&gt;&gt;),
 ```
 Third parameter of the function is a position number of given parameter 
-in prepared statement sentence. We can apply the send_statement_long_parameter/4 a few times 
+in prepared statement sentence. We can apply the `send_statement_long_parameter/4` a few times 
 and all chunks will be merged in one huge data block. Now as we complete a sending 
 of statement parameter value to server we can finally execute the statement:
 ``` Erlang

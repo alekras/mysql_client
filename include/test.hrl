@@ -14,7 +14,8 @@
 %% limitations under the License. 
 %%
 
--define(TEST_SERVER_HOST_NAME, "localhost").
+%%-define(TEST_SERVER_HOST_NAME, "localhost").
+-define(TEST_SERVER_HOST_NAME, {127,0,0,1}). %% sometimes localhost does not work?!
 -define(TEST_DB_NAME, "eunitdb").
 -define(TEST_USER, "root").
 -define(TEST_PASSWORD, "Irina_0110").
