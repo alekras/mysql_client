@@ -3,3 +3,4 @@
 
 For more information go to:
 [http://erlmysql.sourceforge.net/](http://erlmysql.sourceforge.net/)
+or read article [MySQL client](README_1.md)

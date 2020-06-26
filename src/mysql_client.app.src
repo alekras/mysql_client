@@ -1,6 +1,6 @@
 {	application, mysql_client,
 	[
-    {description, "MySQL native client"},
+    {description, "MySQL native client is written in Erlang and provides API that is very close to Connector/C library."},
     {vsn, "1.2.8"},
     {modules, [
         my,
@@ -24,5 +24,9 @@
     {applications, [kernel, stdlib]},
     {mod, {my, []}},
     {env, []}
+%% For Hex publishing
+    {files, ["src", "priv", "test", "include", "doc", "rebar.config", "README.md", "README_1.md", "LiCENSE"]},
+    {licenses, ["Apache-2.0"]},
+    {links, [{"GitHub", "https://github.com/alekras/mysql_client"}]}
 	]
 }.
