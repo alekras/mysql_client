@@ -54,11 +54,11 @@
 %%
 parse_binary_row(B, #metadata{field_count = N} = Metadata) -> 
   Bitmap_size = ((N + 9) div 8),
-  <<Null_bitmap:Bitmap_size/bytes, B1/binary>> = B,
+  <<_:8, Null_bitmap:Bitmap_size/bytes, B1/binary>> = B,
   Bit_size = Bitmap_size * 8 - 2,
   <<NULL_bit_map:Bit_size/bits, _:2>> = helper_common:reverse_binary(Null_bitmap),
   case Data = loop_binary_row(B1, Metadata#metadata.field_metadata, NULL_bit_map, []) of
-    #mysql_error{} -> Data;
+    #mysql_error{} -> packet_parser_string:parse_string_row(B, Metadata); %% if binary row parsing is failed try to parse the packet as string with leading 0.
     _ -> Data
   end.
 
@@ -89,8 +89,12 @@ loop_binary_row(B, [Field_metadata | Metadata], NULL_bit_map_param, Result) ->
       Is_enum = lists:member(enum, Flags),
       Is_set = lists:member(set, Flags),
       Is_unsigned = lists:member(unsigned, Flags),
-      {Value, B1} = draw_value(B, Field_metadata, {Is_binary, Is_enum, Is_set, Is_unsigned}),
-      loop_binary_row(B1, Metadata, NULL_bit_map, [Value | Result])
+			try 
+				{Value, B1} = draw_value(B, Field_metadata, {Is_binary, Is_enum, Is_set, Is_unsigned}),
+				loop_binary_row(B1, Metadata, NULL_bit_map, [Value | Result])
+			catch _:_ -> 
+				#mysql_error{type = connection, message = "Packet format is wrong (draw_value)", source = "loop_binary_row(B, MD, Bit_Map, Result)"}
+			end
   end.
 
 %% @spec draw_value(B::binary, Field_metadata::#field_metadata{}, Flags::list()) -> {Value, Rest::binary()} 

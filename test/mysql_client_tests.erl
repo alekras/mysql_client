@@ -75,6 +75,8 @@ mysql_test_() ->
              {{compress, transactionIsolationLevelTest}, fun transactionIsolationLevelTest/2},
              {{plain, zero_length_response},    fun zero_length_response/2},
              {{compress, zero_length_response}, fun zero_length_response/2},
+             {{plain, zero_length_char},    fun zero_length_char/2},
+             {{compress, zero_length_char}, fun zero_length_char/2},
             {{plain, blob},    fun blob/2},
             {{compress, blob},    fun blob/2}
           ]
@@ -212,16 +214,20 @@ end.
 tableSelect1(_, C) -> fun() ->  
   Connection = datasource:get_connection(C),
 
-  {M,[R|_]} = connection:execute_query(Connection, "SELECT bit_col FROM eunitdb.all_in_one WHERE persist_id = 1"),
-%  ?debug_Fmt("~p~n", [R]),
+  {M,R0} = connection:execute_query(Connection, "SELECT bit_col FROM eunitdb.all_in_one WHERE persist_id = 1"),
+%	?debug_Fmt("~n::tableSelect1 >> ~128p~n", [R0]),
+  [R|_] = R0,
+%	?debug_Fmt("~n::tableSelect1 >> ~128p~n", [R]),
   ?assert(is_record(M, metadata)),
   ?assertEqual(1, M#metadata.field_count),
   ?assertEqual(1, length(M#metadata.field_metadata)),
   ?assert(is_list(R)),
   ?assertEqual([null], R),
 
-  {M1,[R1|_]} = connection:execute_query(Connection, "SELECT date_col, smallint_col FROM eunitdb.all_in_one WHERE persist_id = 1"),
-%  ?debug_Fmt("~p~n", [R1]),
+  {M1,R01} = connection:execute_query(Connection, "SELECT date_col, smallint_col FROM eunitdb.all_in_one WHERE persist_id = 1"),
+	?debug_Fmt("~n::tableSelect1 >> ~128p~n", [R01]),
+  [R1|_] = R01,
+	?debug_Fmt("~n::tableSelect1 >> ~128p~n", [R1]),
   ?assert(is_record(M1, metadata)),
   ?assertEqual(2, M1#metadata.field_count),
   ?assertEqual(2, length(M1#metadata.field_metadata)),
@@ -603,6 +609,40 @@ zero_length_response(_X, Cm) -> fun() ->
   ?assert(is_list(R2)),
   [Field_2 | _] = R2,
 %  ?debug_Fmt(".~p.~n", [Field_2]),
+
+  ?assertEqual(0, length(Field_2)),
+
+  connection:close_statement(Connection, Handle2),
+
+  datasource:return_connection(Cm, Connection),
+  ?PASSED
+end.
+
+zero_length_char(_X, Cm) -> fun() ->
+  Connection = datasource:get_connection(Cm),
+  Query = "UPDATE all_in_one SET varchar_col = ? WHERE persist_id = ?;",
+  Handle = connection:get_prepared_statement_handle(Connection, Query),
+
+  {_,[R|_]} = connection:execute_statement(Connection, Handle, [?VARCHAR, ?LONGLONG], ["", 1]),
+  ?assert(is_record(R, ok_packet)),
+
+  connection:close_statement(Connection, Handle),
+
+  Query1 = "SELECT varchar_col, char_col, int_col FROM all_in_one WHERE persist_id=",
+  {_,[R1|_]} = connection:execute_query(Connection, Query1 ++ "1"),
+  ?assert(is_list(R1)),
+  [Field_1 | _] = R1,
+  ?debug_Fmt(".~p.~n", [Field_1]),
+
+  ?assertEqual(0, length(Field_1)),
+  
+  Query2 = "SELECT varchar_col, char_col, int_col FROM all_in_one WHERE persist_id= ?;",
+  Handle2 = connection:get_prepared_statement_handle(Connection, Query2),
+
+  {_,[R2|_]} = connection:execute_statement(Connection, Handle2, [?LONGLONG], [1]),
+  ?assert(is_list(R2)),
+  [Field_2 | _] = R2,
+  ?debug_Fmt(".~p.~n", [Field_2]),
 
   ?assertEqual(0, length(Field_2)),
 

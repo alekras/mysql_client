@@ -21,16 +21,16 @@
   field values by name or index. Cursor owns to process created it and can not access concurrently.
  
 <h2><a name="index">Function Index</a></h2>
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#back-1">back/1</a></td><td>Move cursor pointer back to the previous position.</td></tr>
-<tr><td valign="top"><a href="#foreach-2">foreach/2</a></td><td>Returns list of values of <code>Name</code> field from all rows of record set.</td></tr>
-<tr><td valign="top"><a href="#get-2">get/2</a></td><td>Get value of field with <code>Name</code>.</td></tr>
-<tr><td valign="top"><a href="#new-1">new/1</a></td><td>Creates new cursor from result record set obtained after db query.</td></tr>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#new-1">new/1</a></td><td>Creates new cursor from result record set obtained after db query.</td></tr>
 <tr><td valign="top"><a href="#new-2">new/2</a></td><td>Creates new cursor with regestered name from result record set obtained after db query.</td></tr>
-<tr><td valign="top"><a href="#next-1">next/1</a></td><td>Move cursor pointer to the next position.</td></tr>
-<tr><td valign="top"><a href="#reset-1">reset/1</a></td><td>Reset cursor pointer to the beginning position.</td></tr>
-<tr><td valign="top"><a href="#set-2">set/2</a></td><td>Set <code>I</code> as a new positions of the cursor pointer.</td></tr>
 <tr><td valign="top"><a href="#size-1">size/1</a></td><td>Get size (number of rows) of the cursor.</td></tr>
+<tr><td valign="top"><a href="#next-1">next/1</a></td><td>Move cursor pointer to the next position.</td></tr>
 <tr><td valign="top"><a href="#skip-2">skip/2</a></td><td>Skip <code>I</code> positions and set cursor pointer to the position.</td></tr>
+<tr><td valign="top"><a href="#back-1">back/1</a></td><td>Move cursor pointer back to the previous position.</td></tr>
+<tr><td valign="top"><a href="#set-2">set/2</a></td><td>Set <code>I</code> as a new positions of the cursor pointer.</td></tr>
+<tr><td valign="top"><a href="#reset-1">reset/1</a></td><td>Reset cursor pointer to the beginning position.</td></tr>
+<tr><td valign="top"><a href="#get-2">get/2</a></td><td>Get value of field with <code>Name</code>.</td></tr>
+<tr><td valign="top"><a href="#foreach-2">foreach/2</a></td><td>Returns list of values of <code>Name</code> field from all rows of record set.</td></tr>
 </table>
 
 <h2><a name="functions">Function Details</a></h2>
@@ -38,12 +38,14 @@
 <h3 class="function"><a name="new-1">new/1</a></h3>
 <div class="spec">
 <p><tt>new(DB_result_set::tuple()) -&gt; pid()</tt><br></p>
+<p> </p>
 </div><p>Creates new cursor from result record set obtained after db query.
  </p>
 
 <h3 class="function"><a name="new-2">new/2</a></h3>
 <div class="spec">
 <p><tt>new(Name::atom(), DB_result_set::tuple()) -&gt; pid()</tt><br></p>
+<p> </p>
 </div><p>Creates new cursor with regestered name from result record set obtained after db query.
  </p>
 
@@ -51,6 +53,7 @@
 <div class="spec">
 <p><tt>size(CursorId) -&gt; integer()</tt>
 <ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+<p> </p>
 </div><p>Get size (number of rows) of the cursor.
  </p>
 
@@ -58,6 +61,7 @@
 <div class="spec">
 <p><tt>next(CursorId) -&gt; boolean()</tt>
 <ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+<p> </p>
 </div><p>Move cursor pointer to the next position. Returns false if pointer already on the end of cursor.
  </p>
 
@@ -65,6 +69,7 @@
 <div class="spec">
 <p><tt>skip(CursorId, I::integer()) -&gt; integer()</tt>
 <ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+<p> </p>
 </div><p>Skip <code>I</code> positions and set cursor pointer to the position. Returns number actualy skipped positions.
  </p>
 
@@ -72,6 +77,7 @@
 <div class="spec">
 <p><tt>back(CursorId) -&gt; boolean()</tt>
 <ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+<p> </p>
 </div><p>Move cursor pointer back to the previous position. Returns false if pointer already on the beginning of cursor.
  </p>
 
@@ -79,6 +85,7 @@
 <div class="spec">
 <p><tt>set(CursorId, I::integer()) -&gt; boolean()</tt>
 <ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+<p> </p>
 </div><p>Set <code>I</code> as a new positions of the cursor pointer. Returns false if <code>I</code> is out of the range.
  </p>
 
@@ -86,6 +93,7 @@
 <div class="spec">
 <p><tt>reset(CursorId) -&gt; boolean()</tt>
 <ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li></ul></p>
+<p> </p>
 </div><p>Reset cursor pointer to the beginning position.
  </p>
 
@@ -93,6 +101,7 @@
 <div class="spec">
 <p><tt>get(CursorId, Name) -&gt; Result</tt>
 <ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li><li><tt>Name = string() | integer()</tt></li><li><tt>Result = integer() | float() | string() | binary() | #mysql_time{} | #mysql_decimal{}</tt></li></ul></p>
+<p> </p>
 </div><p>Get value of field with <code>Name</code>. <code>Name</code> can be string name of field or index in row list.
  </p>
 
@@ -100,11 +109,12 @@
 <div class="spec">
 <p><tt>foreach(CursorId, Name) -&gt; Result</tt>
 <ul class="definitions"><li><tt>CursorId = pid() | atom()</tt></li><li><tt>Name = string() | integer()</tt></li><li><tt>Result = [integer() | float() | string() | binary() | #mysql_time{} | #mysql_decimal{}]</tt></li></ul></p>
+<p> </p>
 </div><p>Returns list of values of <code>Name</code> field from all rows of record set. <code>Name</code> can be string name of field or index in row list.
  </p>
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
-<p><i>Generated by EDoc, Feb 14 2016, 03:18:59.</i></p>
+<p><i>Generated by EDoc</i></p>
 </body>
 </html>

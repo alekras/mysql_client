@@ -94,7 +94,7 @@ statementSelect(_X, C) -> fun() ->
 	?assertEqual(30, M1#metadata.field_count),
 	?assertEqual(0, M1#metadata.param_count),
 	?assert(is_list(R1)),
-	Expected = [1,1025,null,{mysql_decimal,"12034879","00000000000000"},{mysql_time,false,1954,5,25,22,23,16,0},
+	Expected = [1,1025,"",{mysql_decimal,"12034879","00000000000000"},{mysql_time,false,1954,5,25,22,23,16,0},
 		{mysql_time,false,1977,7,9,0,0,0,0},{mysql_time,false,0,0,0,41,35,47,0},
 		{mysql_time,false,2000,12,31,23,59,59,0},1977,{mysql_decimal,"-120334765","0050500"},12005.3451,456.3299865722656,
 		212121,2141,717,21,"characters: char[25]",null,null,[one,two],

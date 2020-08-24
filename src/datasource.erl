@@ -62,7 +62,7 @@
 close(DS_name) ->
 %  io:format(user, " >>> datasource:close_datasource/1: ~p ~n", [DS_name]),
 %  io:format(user, "     children list:~p~n", [supervisor:which_children(DS_name)]),
-  resource_pool:close(DS_name),
+%  resource_pool:close(DS_name),
   supervisor:terminate_child(datasource_sup, DS_name),
   supervisor:delete_child(datasource_sup, DS_name).
 

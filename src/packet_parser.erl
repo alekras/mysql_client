@@ -47,7 +47,7 @@
 %%
 
 %% @spec parse_server_response_packet(RS_seq_state::int(), B::binary(), Metadata::#metadata{}, Stmt::atom()) -> Result
-%% Stmt = prepare | fetch | none
+%% Stmt = prepare | fetch | cursor | none
 %% Result = #ok_packet{} | #ok_stmt_packet{} | #error_packet{} | #rs_header{} | #field_metadata{} | #eof_packet{} | #mysql_error{} |
 %%          list(integer() | float() | string() | binary() | #mysql_time{} | #mysql_decimal{})
 %% @doc Parses binary B to one of possible type of packet record. During processing uses parameters
@@ -56,16 +56,35 @@
 %%
 parse_server_response_packet(RS_seq_state, <<0:8, B1/binary>> = B, Metadata, Stmt) when size(B1) =:= 0 ->
   parse_result_packet(RS_seq_state, B, Metadata, Stmt);
-parse_server_response_packet(RS_seq_state, <<0:8, _:6, Two_bits:2/integer, _/binary>> = B, Metadata, none) 
-                                when ((Two_bits =:= 0) orelse (Two_bits =:= 1)) and (RS_seq_state > 1) ->
-  <<_:8, B1/binary>> = B,
-  packet_parser_binary:parse_binary_row(B1, Metadata); % Binary Row Data packet
-parse_server_response_packet(_RS_seq_state, <<0:8, B1/binary>>, _Metadata, none) ->
+parse_server_response_packet(0, <<0:8, B1/binary>>, _Metadata, none) ->
   parse_OK_packet(B1);        % OK packet
-parse_server_response_packet(_RS_seq_state, <<0:8, B1/binary>>, _Metadata, prepare) ->
+parse_server_response_packet(0, <<0:8, B1/binary>>, _Metadata, prepare) ->
   parse_OK_statement_packet(B1);  % OK statement prepare packet
-parse_server_response_packet(_RS_seq_state, <<0:8, B1/binary>>, Metadata, fetch) ->
-  packet_parser_binary:parse_binary_row(B1, Metadata); % Binary Row Data packet
+
+%% If it starts with 0 - is it binary row data packet OR string row with first empty field?
+%% parse_server_response_packet(RS_seq_state, <<0:8, _:6, Two_bits:2/integer, _/binary>> = B, Metadata, none = Stmt) 
+%%                                 when ((Two_bits =:= 0) orelse (Two_bits =:= 1)) and (RS_seq_state > 1) ->
+%% 	io:format("~n  --$-- >>>parse_server_response_packet: state=~p packet body=~128p Stmt=~p~n Metadata: ~128p~n", [RS_seq_state, B, Stmt, Metadata]),
+%% 	Check = helper_common:check_packet_length(B),
+%% 	if Check ->
+%% 			parse_result_packet(RS_seq_state, B, Metadata, Stmt);
+%% 		 true ->
+%% 			<<_:8, B1/binary>> = B,
+%% 			packet_parser_binary:parse_binary_row(B1, Metadata) % Binary Row Data packet
+%% 	end;
+parse_server_response_packet(RS_seq_state, <<0:8, _:6, Two_bits:2/integer, _/binary>> = B, Metadata, none = Stmt) 
+                                when ((Two_bits =:= 0) orelse (Two_bits =:= 1)) and (RS_seq_state > 1) ->
+	[Field_metadata | _ ] = Metadata#metadata.field_metadata,
+	Flags = helper_common:parse_data_flags(Field_metadata#field_metadata.flags),
+	io:format("~n  --$-- >>>parse_server_response_packet: state=~p packet body=~128p Stmt=~p~n Metadata= ~128p~n Flags=~128p~n", [RS_seq_state, B, Stmt, Metadata, Flags]),
+%	<<_:8, B1/binary>> = B,
+	packet_parser_binary:parse_binary_row(B, Metadata); % Binary Row Data packet
+%% parse_server_response_packet(RS_seq_state, <<0:8, _/binary>> = B, Metadata, none = Stmt) when RS_seq_state > 1 ->
+%%   parse_result_packet(RS_seq_state, B, Metadata, Stmt);
+
+parse_server_response_packet(_RS_seq_state, <<0:8, _/binary>> = B, Metadata, fetch) ->
+  packet_parser_binary:parse_binary_row(B, Metadata); % Binary Row Data packet
+
 parse_server_response_packet(_RS_seq_state, <<16#ff:8, B1/binary>>, _Metadata, _Stmt) -> % Error Packet
   parse_error_packet(B1);
 parse_server_response_packet(_RS_seq_state, <<16#fe:8, B1/binary>>, _Metadata, _Stmt) when size(B1) < 9 -> % EOF Packet

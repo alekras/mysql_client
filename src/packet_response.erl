@@ -89,8 +89,10 @@ handle_response(Connection, State, [], Metadata, Result, Stmt, ParMark, false) -
     #mysql_error{} -> Packet_list;
     _ -> handle_response(Connection, State, reverse(Packet_list), Metadata, Result, Stmt, ParMark, false)
   end;
-handle_response(Connection, State, [Packet | Packet_list], Metadata, Result, Stmt, ParMark, _Termination) -> 
+handle_response(Connection, State, [Packet | Packet_list], Metadata, Result, Stmt, ParMark, _Termination) ->
+%	io:format("~n  --$-- before: state=~p packet body=~128p Stmt=~p~n", [State, Packet#packet.body, Stmt]),
   R = packet_parser:parse_server_response_packet(State, Packet#packet.body, Metadata, Stmt),
+%	io:format("~n  --$-- after R=~128p~n", [R]),
 %%   case R of
 %%     #ok_packet{} -> 
 %%       io:format("  --$-- #ok_packet{}~n", []);

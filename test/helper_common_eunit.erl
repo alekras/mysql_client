@@ -50,7 +50,8 @@
   binary_to_length_coded_binary_testing/0,
   string_to_length_coded_binary_testing/0,
   decimal_to_lc_binary_testing/0,
-  datetime_to_lc_binary_testing/0
+  datetime_to_lc_binary_testing/0,
+	check_packet_length_testing/0
 ]).
 
 %%
@@ -69,7 +70,8 @@ helper_common_test_() ->
 		{"helper_common  8", ?MODULE, binary_to_length_coded_binary_testing},
 		{"helper_common  9", ?MODULE, string_to_length_coded_binary_testing},
 		{"helper_common 10", ?MODULE, decimal_to_lc_binary_testing},
-		{"helper_common 11", ?MODULE, datetime_to_lc_binary_testing}
+		{"helper_common 11", ?MODULE, datetime_to_lc_binary_testing},
+		{"helper_common 12", ?MODULE, check_packet_length_testing}
 	].
 
 reverse_binary_testing() ->
@@ -98,6 +100,12 @@ extract_length_coded_binary_testing() ->
 extract_length_coded_string_testing() ->
 %	?debug_Msg(">>> extract_length_coded_string_testing()"),
 	?assert(helper_common:extract_length_coded(false, <<11:8, "test string", 77:80>>) =:= {"test string", <<77:80>>}).
+
+check_packet_length_testing() ->
+	?assert(helper_common:check_packet_length(<<0,5,0,0,0,0,0,252:8,7:16/little-integer,1,1,1,1,1,1,1>>)),
+	?assert(helper_common:check_packet_length(<<2,1,2,5,0,0,0,0,0,252:8,7:16/little-integer,1,1,1,1,1,1,1>>)),
+	?assertNot(helper_common:check_packet_length(<<2,1,2,5,0,0,0,0,0,252:8,7:16/little-integer,1,1,1,1,1,1>>)),
+	?assertNot(helper_common:check_packet_length(<<2,1,2,5,0,0,0,0,0,252:8,7:16/little-integer,1,1,1,1,1,1,1,1>>)).
 
 binary_to_datetime_testing() ->
 %	?debug_Msg(">>> binary_to_datetime_test()"),

@@ -26,21 +26,21 @@ database for count of processed messages. If database is empty the task is compl
  
  
 <h2><a name="index">Function Index</a></h2>
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#create_schema-0">create_schema/0</a></td><td>Create two tables: 'message' and 'property'.</td></tr>
-<tr><td valign="top"><a href="#delete_message-1">delete_message/1</a></td><td>Deletes message with Id and correspondend property rows.</td></tr>
-<tr><td valign="top"><a href="#get_count_messages-1">get_count_messages/1</a></td><td>Gets count of rows in message table.</td></tr>
-<tr><td valign="top"><a href="#get_messages_list-1">get_messages_list/1</a></td><td>Retrieves a list of ids of messages marked processed or unprocessed.</td></tr>
-<tr><td valign="top"><a href="#insert_message-4">insert_message/4</a></td><td>The function inserts to database one message entity and three property entities these belong to the message.</td></tr>
-<tr><td valign="top"><a href="#process_entry-1">process_entry/1</a></td><td>Marks message with Id as processed.</td></tr>
-<tr><td valign="top"><a href="#run-0">run/0</a></td><td>Starting point for example application.</td></tr>
-<tr><td valign="top"><a href="#run_cleaner-0">run_cleaner/0</a></td><td>The function starts concurrent_runner for delete entry operations and
-  waiting for stop message.</td></tr>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#run-0">run/0</a></td><td>Starting point for example application.</td></tr>
+<tr><td valign="top"><a href="#run_producer-1">run_producer/1</a></td><td>The function inserts some amount of messages to database.</td></tr>
 <tr><td valign="top"><a href="#run_consumer-0">run_consumer/0</a></td><td>The function starts concurrent_runner for process entry operations and
   waiting for stop message.</td></tr>
-<tr><td valign="top"><a href="#run_producer-1">run_producer/1</a></td><td>The function inserts some amount of messages to database.</td></tr>
+<tr><td valign="top"><a href="#run_cleaner-0">run_cleaner/0</a></td><td>The function starts concurrent_runner for delete entry operations and
+  waiting for stop message.</td></tr>
 <tr><td valign="top"><a href="#run_watcher-1">run_watcher/1</a></td><td>The function establishes connection to database and recursively retreives
   count of messages in the database.</td></tr>
+<tr><td valign="top"><a href="#create_schema-0">create_schema/0</a></td><td>Create two tables: 'message' and 'property'.</td></tr>
+<tr><td valign="top"><a href="#insert_message-4">insert_message/4</a></td><td>The function inserts to database one message entity and three property entities these belong to the message.</td></tr>
+<tr><td valign="top"><a href="#get_messages_list-1">get_messages_list/1</a></td><td>Retrieves a list of ids of messages marked processed or unprocessed.</td></tr>
+<tr><td valign="top"><a href="#process_entry-1">process_entry/1</a></td><td>Marks message with Id as processed.</td></tr>
+<tr><td valign="top"><a href="#delete_message-1">delete_message/1</a></td><td>Deletes message with Id and correspondend property rows.</td></tr>
 <tr><td valign="top"><a href="#watcher-3">watcher/3</a></td><td>Recursively queries message table for count of rows.</td></tr>
+<tr><td valign="top"><a href="#get_count_messages-1">get_count_messages/1</a></td><td>Gets count of rows in message table.</td></tr>
 </table>
 
 <h2><a name="functions">Function Details</a></h2>
@@ -48,6 +48,7 @@ database for count of processed messages. If database is empty the task is compl
 <h3 class="function"><a name="run-0">run/0</a></h3>
 <div class="spec">
 <p><tt>run() -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>Starting point for example application. The function creates 2 tables in database and spawns 3 processes: producer, consumer and
   cleaner. Then it begins to wait for 'start_watch' message. After the message is received
   watcher process is started and main process goes to wait for 'stop' message.
@@ -58,6 +59,7 @@ database for count of processed messages. If database is empty the task is compl
 <h3 class="function"><a name="run_producer-1">run_producer/1</a></h3>
 <div class="spec">
 <p><tt>run_producer(P_pid::pid()) -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>The function inserts some amount of messages to database. And then it sends a message
   'start_watch' to parent (main) process.
  </p>
@@ -65,6 +67,7 @@ database for count of processed messages. If database is empty the task is compl
 <h3 class="function"><a name="run_consumer-0">run_consumer/0</a></h3>
 <div class="spec">
 <p><tt>run_consumer() -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>The function starts concurrent_runner for process entry operations and
   waiting for stop message. Each 100 milisecond concurrent_runner is restarted.
  </p>
@@ -72,6 +75,7 @@ database for count of processed messages. If database is empty the task is compl
 <h3 class="function"><a name="run_cleaner-0">run_cleaner/0</a></h3>
 <div class="spec">
 <p><tt>run_cleaner() -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>The function starts concurrent_runner for delete entry operations and
   waiting for stop message. Each 100 milisecond concurrent_runner is restarted.
  </p>
@@ -79,6 +83,7 @@ database for count of processed messages. If database is empty the task is compl
 <h3 class="function"><a name="run_watcher-1">run_watcher/1</a></h3>
 <div class="spec">
 <p><tt>run_watcher(P_pid::pid()) -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>The function establishes connection to database and recursively retreives
   count of messages in the database. If database is empty then completes execution.
  </p>
@@ -86,6 +91,7 @@ database for count of processed messages. If database is empty the task is compl
 <h3 class="function"><a name="create_schema-0">create_schema/0</a></h3>
 <div class="spec">
 <p><tt>create_schema() -&gt; any()</tt><br></p>
+<p> </p>
 </div><p><p>Create two tables: 'message' and 'property'. 'Message' has one-to-many relationship to  
 'property' table.</p>
  
@@ -96,6 +102,7 @@ database for count of processed messages. If database is empty the task is compl
 <h3 class="function"><a name="insert_message-4">insert_message/4</a></h3>
 <div class="spec">
 <p><tt>insert_message(Connection::#connection{}, N::integer(), M::integer(), SleepTime::integer()) -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>The function inserts to database one message entity and three property entities these belong to the message.
    N - number of message, M - amount of message to insert, SleepTime - delay between insert operations.
  </p>
@@ -103,6 +110,7 @@ database for count of processed messages. If database is empty the task is compl
 <h3 class="function"><a name="get_messages_list-1">get_messages_list/1</a></h3>
 <div class="spec">
 <p><tt>get_messages_list(Processed::integer()) -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>Retrieves a list of ids of messages marked processed or unprocessed.
   The list size is limited to 10.
  </p>
@@ -110,18 +118,21 @@ database for count of processed messages. If database is empty the task is compl
 <h3 class="function"><a name="process_entry-1">process_entry/1</a></h3>
 <div class="spec">
 <p><tt>process_entry(Id::integer()) -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>Marks message with Id as processed.
  </p>
 
 <h3 class="function"><a name="delete_message-1">delete_message/1</a></h3>
 <div class="spec">
 <p><tt>delete_message(Id::integer()) -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>Deletes message with Id and correspondend property rows.
  </p>
 
 <h3 class="function"><a name="watcher-3">watcher/3</a></h3>
 <div class="spec">
 <p><tt>watcher(Connection::pid(), P_pid::pid(), N::integer()) -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>Recursively queries message table for count of rows. If the table becomes empty
   the function sends 'stop' to parent process.
  </p>
@@ -129,11 +140,12 @@ database for count of processed messages. If database is empty the task is compl
 <h3 class="function"><a name="get_count_messages-1">get_count_messages/1</a></h3>
 <div class="spec">
 <p><tt>get_count_messages(Connection::pid()) -&gt; any()</tt><br></p>
+<p> </p>
 </div><p>Gets count of rows in message table.
  </p>
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
-<p><i>Generated by EDoc, Feb 14 2016, 03:18:58.</i></p>
+<p><i>Generated by EDoc</i></p>
 </body>
 </html>

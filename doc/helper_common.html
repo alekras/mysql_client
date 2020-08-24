@@ -19,25 +19,25 @@
 
 <h2><a name="description">Description</a></h2>Utility functions.
 <h2><a name="index">Function Index</a></h2>
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#atom_list_to_string-1">atom_list_to_string/1</a></td><td>Converts list of atoms to a string that contains string representation of the atoms separated by comma.</td></tr>
-<tr><td valign="top"><a href="#binary_to_client_flags_record-2">binary_to_client_flags_record/2</a></td><td>Extracts #client_options{} record from Binary.</td></tr>
-<tr><td valign="top"><a href="#binary_to_datetime-1">binary_to_datetime/1</a></td><td>Converts SQL Datetime value represented as binary to record mysql_time.</td></tr>
-<tr><td valign="top"><a href="#binary_to_length_coded_binary-1">binary_to_length_coded_binary/1</a></td><td>Converts Erlang binary value to MySQL binary format.</td></tr>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#reverse_binary-1">reverse_binary/1</a></td><td>Reverses an order of bytes in Binary.</td></tr>
+<tr><td valign="top"><a href="#status_to_string-1">status_to_string/1</a></td><td>Generates string representation of MySQL server status.</td></tr>
+<tr><td valign="top"><a href="#server_status_to_record-1">server_status_to_record/1</a></td><td>Parses binary to server status record.</td></tr>
 <tr><td valign="top"><a href="#client_flags_record_to_binary-1">client_flags_record_to_binary/1</a></td><td>Generates binary from client flags record.</td></tr>
-<tr><td valign="top"><a href="#date_to_lc_binary-1">date_to_lc_binary/1</a></td><td>Converts Erlang mysql_time record to MySQL date binary format.</td></tr>
-<tr><td valign="top"><a href="#datetime_to_lc_binary-1">datetime_to_lc_binary/1</a></td><td>Converts Erlang mysql_time record to MySQL datetime binary format.</td></tr>
-<tr><td valign="top"><a href="#decimal_to_lc_binary-1">decimal_to_lc_binary/1</a></td><td>Converts Erlang mysql_decimal record to MySQL binary format.</td></tr>
+<tr><td valign="top"><a href="#binary_to_client_flags_record-2">binary_to_client_flags_record/2</a></td><td>Extracts #client_options{} record from Binary.</td></tr>
+<tr><td valign="top"><a href="#type_to_atom-1">type_to_atom/1</a></td><td>Converts integer constants represent MySQL types to atoms.</td></tr>
+<tr><td valign="top"><a href="#parse_data_flags-1">parse_data_flags/1</a></td><td>Generates list of atoms these represent MySQL data flags are set.</td></tr>
+<tr><td valign="top"><a href="#extract_length_coded_integer-1">extract_length_coded_integer/1</a></td><td>Extracts lenght coded integer from binary and returns a tuple that contains a value of extracted integer and rest of binary.</td></tr>
 <tr><td valign="top"><a href="#extract_length_coded-2">extract_length_coded/2</a></td><td>Extracts lenght coded binary/string from binary stream and returns a tuple that contains
   an extracted binary/string and rest of original binary.</td></tr>
-<tr><td valign="top"><a href="#extract_length_coded_integer-1">extract_length_coded_integer/1</a></td><td>Extracts lenght coded integer from binary and returns a tuple that contains a value of extracted integer and rest of binary.</td></tr>
+<tr><td valign="top"><a href="#binary_to_datetime-1">binary_to_datetime/1</a></td><td>Converts SQL Datetime value represented as binary to record mysql_time.</td></tr>
 <tr><td valign="top"><a href="#integer_to_length_coded_binary-1">integer_to_length_coded_binary/1</a></td><td>Converts integer value to MySQL binary format.</td></tr>
-<tr><td valign="top"><a href="#parse_data_flags-1">parse_data_flags/1</a></td><td>Generates list of atoms these represent MySQL data flags are set.</td></tr>
-<tr><td valign="top"><a href="#reverse_binary-1">reverse_binary/1</a></td><td>Reverses an order of bytes in Binary.</td></tr>
-<tr><td valign="top"><a href="#server_status_to_record-1">server_status_to_record/1</a></td><td>Parses binary to server status record.</td></tr>
-<tr><td valign="top"><a href="#status_to_string-1">status_to_string/1</a></td><td>Generates string representation of MySQL server status.</td></tr>
+<tr><td valign="top"><a href="#binary_to_length_coded_binary-1">binary_to_length_coded_binary/1</a></td><td>Converts Erlang binary value to MySQL binary format.</td></tr>
 <tr><td valign="top"><a href="#string_to_length_coded_binary-1">string_to_length_coded_binary/1</a></td><td>Converts Erlang string to MySQL binary format.</td></tr>
+<tr><td valign="top"><a href="#decimal_to_lc_binary-1">decimal_to_lc_binary/1</a></td><td>Converts Erlang mysql_decimal record to MySQL binary format.</td></tr>
+<tr><td valign="top"><a href="#datetime_to_lc_binary-1">datetime_to_lc_binary/1</a></td><td>Converts Erlang mysql_time record to MySQL datetime binary format.</td></tr>
+<tr><td valign="top"><a href="#date_to_lc_binary-1">date_to_lc_binary/1</a></td><td>Converts Erlang mysql_time record to MySQL date binary format.</td></tr>
 <tr><td valign="top"><a href="#time_to_lc_binary-1">time_to_lc_binary/1</a></td><td>Converts Erlang mysql_time record to MySQL time binary format.</td></tr>
-<tr><td valign="top"><a href="#type_to_atom-1">type_to_atom/1</a></td><td>Converts integer constants represent MySQL types to atoms.</td></tr>
+<tr><td valign="top"><a href="#atom_list_to_string-1">atom_list_to_string/1</a></td><td>Converts list of atoms to a string that contains string representation of the atoms separated by comma.</td></tr>
 </table>
 
 <h2><a name="functions">Function Details</a></h2>
@@ -45,54 +45,63 @@
 <h3 class="function"><a name="reverse_binary-1">reverse_binary/1</a></h3>
 <div class="spec">
 <p><tt>reverse_binary(Binary::binary()) -&gt; binary()</tt><br></p>
+<p> </p>
 </div><p>Reverses an order of bytes in Binary.
  </p>
 
 <h3 class="function"><a name="status_to_string-1">status_to_string/1</a></h3>
 <div class="spec">
 <p><tt>status_to_string(Server_status::#server_status{}) -&gt; string()</tt><br></p>
+<p> </p>
 </div><p>Generates string representation of MySQL server status.
  </p>
 
 <h3 class="function"><a name="server_status_to_record-1">server_status_to_record/1</a></h3>
 <div class="spec">
 <p><tt>server_status_to_record(Binary::binary()) -&gt; #server_status{}</tt><br></p>
+<p> </p>
 </div><p>Parses binary to server status record.
  </p>
 
 <h3 class="function"><a name="client_flags_record_to_binary-1">client_flags_record_to_binary/1</a></h3>
 <div class="spec">
 <p><tt>client_flags_record_to_binary(ClientFlags::#client_options{}) -&gt; binary()</tt><br></p>
+<p> </p>
 </div><p>Generates binary from client flags record.
 </p>
 
 <h3 class="function"><a name="binary_to_client_flags_record-2">binary_to_client_flags_record/2</a></h3>
 <div class="spec">
 <p><tt>binary_to_client_flags_record(Lang::integer(), Binary::binary()) -&gt; #client_options{}</tt><br></p>
+<p> </p>
 </div><p>Extracts #client_options{} record from Binary.
 </p>
 
 <h3 class="function"><a name="type_to_atom-1">type_to_atom/1</a></h3>
 <div class="spec">
 <p><tt>type_to_atom(MySQL_Type::integer()) -&gt; atom()</tt><br></p>
+<p> </p>
 </div><p>Converts integer constants represent MySQL types to atoms.
  </p>
 
 <h3 class="function"><a name="parse_data_flags-1">parse_data_flags/1</a></h3>
 <div class="spec">
 <p><tt>parse_data_flags(Binary::binary()) -&gt; [atom()]</tt><br></p>
+<p> </p>
 </div><p>Generates list of atoms these represent MySQL data flags are set.
  </p>
 
 <h3 class="function"><a name="extract_length_coded_integer-1">extract_length_coded_integer/1</a></h3>
 <div class="spec">
 <p><tt>extract_length_coded_integer(Binary::binary()) -&gt; {Value::integer(), Rest_of_binary::binary()}</tt><br></p>
+<p> </p>
 </div><p>Extracts lenght coded integer from binary and returns a tuple that contains a value of extracted integer and rest of binary.
  </p>
 
 <h3 class="function"><a name="extract_length_coded-2">extract_length_coded/2</a></h3>
 <div class="spec">
 <p><tt>extract_length_coded(Is_binary::boolean(), Binary::binary()) -&gt; {Value::term(), Rest_of_binary::binary()}</tt><br></p>
+<p> </p>
 </div><p>Extracts lenght coded binary/string from binary stream and returns a tuple that contains
   an extracted binary/string and rest of original binary.
  </p>
@@ -100,59 +109,68 @@
 <h3 class="function"><a name="binary_to_datetime-1">binary_to_datetime/1</a></h3>
 <div class="spec">
 <p><tt>binary_to_datetime(Binary::binary()) -&gt; {#mysql_time{}, binary()}</tt><br></p>
+<p> </p>
 </div><p>Converts SQL Datetime value represented as binary to record mysql_time.
  </p>
 
 <h3 class="function"><a name="integer_to_length_coded_binary-1">integer_to_length_coded_binary/1</a></h3>
 <div class="spec">
 <p><tt>integer_to_length_coded_binary(Value::integer()) -&gt; binary() | #mysql_error{}</tt><br></p>
+<p> </p>
 </div><p>Converts integer value to MySQL binary format
  </p>
 
 <h3 class="function"><a name="binary_to_length_coded_binary-1">binary_to_length_coded_binary/1</a></h3>
 <div class="spec">
 <p><tt>binary_to_length_coded_binary(Value::binary()) -&gt; binary()</tt><br></p>
+<p> </p>
 </div><p>Converts Erlang binary value to MySQL binary format
  </p>
 
 <h3 class="function"><a name="string_to_length_coded_binary-1">string_to_length_coded_binary/1</a></h3>
 <div class="spec">
 <p><tt>string_to_length_coded_binary(Value::string()) -&gt; binary()</tt><br></p>
+<p> </p>
 </div><p>Converts Erlang string to MySQL binary format
  </p>
 
 <h3 class="function"><a name="decimal_to_lc_binary-1">decimal_to_lc_binary/1</a></h3>
 <div class="spec">
 <p><tt>decimal_to_lc_binary(Value::#mysql_decimal{}) -&gt; binary()</tt><br></p>
+<p> </p>
 </div><p>Converts Erlang mysql_decimal record to MySQL binary format
  </p>
 
 <h3 class="function"><a name="datetime_to_lc_binary-1">datetime_to_lc_binary/1</a></h3>
 <div class="spec">
 <p><tt>datetime_to_lc_binary(Value::#mysql_time{}) -&gt; binary()</tt><br></p>
+<p> </p>
 </div><p>Converts Erlang mysql_time record to MySQL datetime binary format
  </p>
 
 <h3 class="function"><a name="date_to_lc_binary-1">date_to_lc_binary/1</a></h3>
 <div class="spec">
 <p><tt>date_to_lc_binary(Value::#mysql_time{}) -&gt; binary()</tt><br></p>
+<p> </p>
 </div><p>Converts Erlang mysql_time record to MySQL date binary format
  </p>
 
 <h3 class="function"><a name="time_to_lc_binary-1">time_to_lc_binary/1</a></h3>
 <div class="spec">
 <p><tt>time_to_lc_binary(Value::#mysql_time{}) -&gt; binary()</tt><br></p>
+<p> </p>
 </div><p>Converts Erlang mysql_time record to MySQL time binary format
  </p>
 
 <h3 class="function"><a name="atom_list_to_string-1">atom_list_to_string/1</a></h3>
 <div class="spec">
 <p><tt>atom_list_to_string(Atoms::list()) -&gt; string()</tt><br></p>
+<p> </p>
 </div><p>Converts list of atoms to a string that contains string representation of the atoms separated by comma.
  </p>
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
-<p><i>Generated by EDoc, Feb 14 2016, 03:18:59.</i></p>
+<p><i>Generated by EDoc</i></p>
 </body>
 </html>

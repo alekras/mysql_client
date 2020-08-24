@@ -24,19 +24,19 @@
   The module contains client API functions for all allowed operations.
  
 <h2><a name="index">Function Index</a></h2>
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#close_statement-2">close_statement/2</a></td><td>The command closes prepared statement and frees corresponded resources on server.</td></tr>
-<tr><td valign="top"><a href="#connection_record-1">connection_record/1</a></td><td>Returns #connection{} record decribed given connection.</td></tr>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#connection_record-1">connection_record/1</a></td><td>Returns #connection{} record decribed given connection.</td></tr>
+<tr><td valign="top"><a href="#is_open-1">is_open/1</a></td><td>Returns true if connection is open and healthy.</td></tr>
 <tr><td valign="top"><a href="#execute_query-2">execute_query/2</a></td><td>Executes SQL query and return a tuple of field metadata information and list of result rows.</td></tr>
-<tr><td valign="top"><a href="#execute_statement-4">execute_statement/4</a></td><td>Executes prepared statement represented with Handler.</td></tr>
-<tr><td valign="top"><a href="#execute_statement-6">execute_statement/6</a></td><td>The same as execute_statement/4 except parameter New.</td></tr>
-<tr><td valign="top"><a href="#fetch_statement-4">fetch_statement/4</a></td><td>Fetchs data from a cursor that was created by statement execution.</td></tr>
 <tr><td valign="top"><a href="#get_field_list-3">get_field_list/3</a></td><td>Returns list of field metadata records for table 'Table_name'.</td></tr>
+<tr><td valign="top"><a href="#prepare_statement-2">prepare_statement/2</a></td><td>Send command to prepare statement.</td></tr>
 <tr><td valign="top"><a href="#get_prepared_statement_handle-2">get_prepared_statement_handle/2</a></td><td>The same is prepare_statement/2 but it has short return: just a handle
   of a prepared statement.</td></tr>
-<tr><td valign="top"><a href="#is_open-1">is_open/1</a></td><td>Returns true if connection is open and healthy.</td></tr>
-<tr><td valign="top"><a href="#prepare_statement-2">prepare_statement/2</a></td><td>Send command to prepare statement.</td></tr>
-<tr><td valign="top"><a href="#reset_statement-2">reset_statement/2</a></td><td>Resets prepared statement and removes all cashed data on server.</td></tr>
 <tr><td valign="top"><a href="#send_statement_long_parameter-4">send_statement_long_parameter/4</a></td><td>Sends parameter of prepered statement to SQL server before statement execution.</td></tr>
+<tr><td valign="top"><a href="#execute_statement-4">execute_statement/4</a></td><td>Executes prepared statement represented with Handler.</td></tr>
+<tr><td valign="top"><a href="#execute_statement-6">execute_statement/6</a></td><td>The same as execute_statement/4 except parameter New.</td></tr>
+<tr><td valign="top"><a href="#close_statement-2">close_statement/2</a></td><td>The command closes prepared statement and frees corresponded resources on server.</td></tr>
+<tr><td valign="top"><a href="#reset_statement-2">reset_statement/2</a></td><td>Resets prepared statement and removes all cashed data on server.</td></tr>
+<tr><td valign="top"><a href="#fetch_statement-4">fetch_statement/4</a></td><td>Fetchs data from a cursor that was created by statement execution.</td></tr>
 <tr><td valign="top"><a href="#transaction-2">transaction/2</a></td><td>executes a transaction.</td></tr>
 </table>
 
@@ -45,12 +45,14 @@
 <h3 class="function"><a name="connection_record-1">connection_record/1</a></h3>
 <div class="spec">
 <p><tt>connection_record(Connection_pid::pid()) -&gt; #connection{} | #mysql_error{}</tt><br></p>
+<p> </p>
 </div><p>Returns #connection{} record decribed given connection.
  </p>
 
 <h3 class="function"><a name="is_open-1">is_open/1</a></h3>
 <div class="spec">
 <p><tt>is_open(Connection_pid::pid()) -&gt; true | false</tt><br></p>
+<p> </p>
 </div><p>Returns true if connection is open and healthy.
  </p>
 
@@ -58,6 +60,7 @@
 <div class="spec">
 <p><tt>execute_query(Connection_pid::pid(), Query::string()) -&gt; Result</tt>
 <ul class="definitions"><li><tt>Result = {Metadata::#metadata{}, ResultSet} | #mysql_error{}</tt></li><li><tt>ResultSet = [Row]</tt></li><li><tt>Row = [integer() | float() | string() | binary() | #mysql_time{} | #mysql_decimal{}]</tt></li></ul></p>
+<p> </p>
 </div><p>Executes SQL query and return a tuple of field metadata information and list of result rows.</p>
 <p><b>See also:</b> <a href="packet_response.html#handle_response-2">packet_response:handle_response/2</a>.</p>
 
@@ -65,6 +68,7 @@
 <div class="spec">
 <p><tt>get_field_list(Connection_pid::pid(), Table_name::string(), Column_name::string()) -&gt; Result</tt>
 <ul class="definitions"><li><tt>Result = {Metadata::#metadata{}, []} | #mysql_error{}</tt></li></ul></p>
+<p> </p>
 </div><p>Returns list of field metadata records for table 'Table_name'. Column_name is requalar
   expression using symbols % and _ to filter column names for return.
  </p>
@@ -73,6 +77,7 @@
 <div class="spec">
 <p><tt>prepare_statement(Connection_pid::#connection{}, Statement::string()) -&gt; Result</tt>
 <ul class="definitions"><li><tt>Result = {Metadata::#metadata{}, [#ok_stmt_packet{}]} | #mysql_error{}</tt></li></ul></p>
+<p> </p>
 </div><p>Send command to prepare statement. Returns #ok_stmt_packet.stmt_handle handle
   of prepared statement that will be used for followed operation with the statement.
  </p>
@@ -80,6 +85,7 @@
 <h3 class="function"><a name="get_prepared_statement_handle-2">get_prepared_statement_handle/2</a></h3>
 <div class="spec">
 <p><tt>get_prepared_statement_handle(Connection_pid::pid(), Statement::string()) -&gt; integer()</tt><br></p>
+<p> </p>
 </div><p>The same is prepare_statement/2 but it has short return: just a handle
   of a prepared statement.
  </p>
@@ -88,6 +94,7 @@
 <div class="spec">
 <p><tt>send_statement_long_parameter(Connection_pid, Handle, Parameter_index, Parameter) -&gt; any()</tt>
 <ul class="definitions"><li><tt>Connection_pid = pid()</tt></li><li><tt>Handle = integer()</tt></li><li><tt>Parameter_index = integer()</tt></li><li><tt>Parameter = binary()</tt></li></ul></p>
+<p> </p>
 </div><p>Sends parameter of prepered statement to SQL server before statement execution.
  </p>
 
@@ -95,6 +102,7 @@
 <div class="spec">
 <p><tt>execute_statement(Connection_pid, Handle, Parameter_types, Parameters) -&gt; Result</tt>
 <ul class="definitions"><li><tt>Connection_pid = pid()</tt></li><li><tt>Handle = integer()</tt></li><li><tt>Parameter_types = [integer()]</tt></li><li><tt>Parameters = [term()]</tt></li><li><tt>Result = {Metadata::#metadata{}, ResultSet} | #mysql_error{}</tt></li><li><tt>ResultSet = [Row]</tt></li><li><tt>Row = [integer() | float() | string() | binary() | #mysql_time{} | #mysql_decimal{}]</tt></li></ul></p>
+<p> </p>
 </div><p>Executes prepared statement represented with Handler. Parameters will replace '?' placeholders in prepared statement.
   Parameter_types list passes types for each parameter.
   Returns result as a list of data rows.</p>
@@ -104,18 +112,21 @@
 <div class="spec">
 <p><tt>execute_statement(Connection_pid, Handle, Parameter_types, Parameters, Flags, New) -&gt; Result</tt>
 <ul class="definitions"><li><tt>Connection_pid = pid()</tt></li><li><tt>Handle = integer()</tt></li><li><tt>Parameter_types = [integer()]</tt></li><li><tt>Parameters = [term()]</tt></li><li><tt>Flags = integer()</tt></li><li><tt>New = boolean()</tt></li><li><tt>Result = {Metadata::#metadata{}, ResultSet} | #mysql_error{}</tt></li><li><tt>ResultSet = [Row]</tt></li><li><tt>Row = [integer() | float() | string() | binary() | #mysql_time{} | #mysql_decimal{}]</tt></li></ul></p>
+<p> </p>
 </div><p>Equivalent to <tt>execute_statement / 4</tt>.</p>
 <p>The same as execute_statement/4 except parameter New. The New equals true forces command send parameter types to server.</p>
 
 <h3 class="function"><a name="close_statement-2">close_statement/2</a></h3>
 <div class="spec">
 <p><tt>close_statement(Connection_pid::pid(), Handle::integer()) -&gt; {Metadata::#metadata{}, []} | #mysql_error{}</tt><br></p>
+<p> </p>
 </div><p>The command closes prepared statement and frees corresponded resources on server.
  </p>
 
 <h3 class="function"><a name="reset_statement-2">reset_statement/2</a></h3>
 <div class="spec">
 <p><tt>reset_statement(Connection_pid::pid(), Handle::integer()) -&gt; {Metadata::#metadata{}, []} | #mysql_error{}</tt><br></p>
+<p> </p>
 </div><p>Resets prepared statement and removes all cashed data on server.
  </p>
 
@@ -123,12 +134,14 @@
 <div class="spec">
 <p><tt>fetch_statement(Connection_pid, Handle, Metadata, Row_number) -&gt; Result</tt>
 <ul class="definitions"><li><tt>Connection_pid = pid()</tt></li><li><tt>Handle = integer()</tt></li><li><tt>Metadata = #metadata{}</tt></li><li><tt>Row_number = integer()</tt></li><li><tt>Result = {Metadata::#metadata{}, ResultSet} | #mysql_error{}</tt></li><li><tt>ResultSet = [Row]</tt></li><li><tt>Row = [integer() | float() | string() | binary() | #mysql_time{} | #mysql_decimal{}]</tt></li></ul></p>
+<p> </p>
 </div><p>Fetchs data from a cursor that was created by statement execution.
  </p>
 
 <h3 class="function"><a name="transaction-2">transaction/2</a></h3>
 <div class="spec">
 <p><tt>transaction(Connection_pid::pid(), F::function()) -&gt; any() | #mysql_error{type = transaction}</tt><br></p>
+<p> </p>
 </div><p>executes a transaction. F represents a function with sequence of queries under the transaction management.
   (f.e F = fun(Connection) -&gt; my:execute_query(...), ... end). The function returns result of F/1 if transaction is successful
   and returns #mysql_error{} if transaction was rollbacked.
@@ -136,6 +149,6 @@
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
-<p><i>Generated by EDoc, Feb 14 2016, 03:18:59.</i></p>
+<p><i>Generated by EDoc</i></p>
 </body>
 </html>

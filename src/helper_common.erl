@@ -43,6 +43,7 @@
   parse_data_flags/1,
   extract_length_coded_integer/1,
   extract_length_coded/2,
+	check_packet_length/1,
   binary_to_client_flags_record/2,
   client_flags_record_to_binary/1,
   binary_to_datetime/1,
@@ -243,6 +244,21 @@ extract_length_coded(Is_binary, B) ->
     {L, B1} -> <<Bytes:L/binary, B2/binary>> = B1,
       {if Is_binary -> Bytes; true -> binary_to_list(Bytes) end, B2}
   end.
+
+check_packet_length(B) ->
+%	io:format(user, "~n >>> check_packet_length: ~p",[B]),
+	T = extract_length_coded_integer(B),
+%	io:format(user, "~n >>> Tuple: ~p",[T]),
+	case T of
+		{0, <<>>} -> true;
+		{null, B1} -> check_packet_length(B1);
+		{L, B1} ->
+			if L > size(B1) -> false;
+				 true ->
+					<<_:L/binary, B2/binary>> = B1,
+					check_packet_length(B2)
+			end
+	end.
 
 %% @spec binary_to_datetime(Binary::binary()) -> {#mysql_time{}, binary()}
 %%
