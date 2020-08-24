@@ -61,26 +61,15 @@ parse_server_response_packet(0, <<0:8, B1/binary>>, _Metadata, none) ->
 parse_server_response_packet(0, <<0:8, B1/binary>>, _Metadata, prepare) ->
   parse_OK_statement_packet(B1);  % OK statement prepare packet
 
-%% If it starts with 0 - is it binary row data packet OR string row with first empty field?
-%% parse_server_response_packet(RS_seq_state, <<0:8, _:6, Two_bits:2/integer, _/binary>> = B, Metadata, none = Stmt) 
-%%                                 when ((Two_bits =:= 0) orelse (Two_bits =:= 1)) and (RS_seq_state > 1) ->
-%% 	io:format("~n  --$-- >>>parse_server_response_packet: state=~p packet body=~128p Stmt=~p~n Metadata: ~128p~n", [RS_seq_state, B, Stmt, Metadata]),
-%% 	Check = helper_common:check_packet_length(B),
-%% 	if Check ->
-%% 			parse_result_packet(RS_seq_state, B, Metadata, Stmt);
-%% 		 true ->
-%% 			<<_:8, B1/binary>> = B,
-%% 			packet_parser_binary:parse_binary_row(B1, Metadata) % Binary Row Data packet
-%% 	end;
 parse_server_response_packet(RS_seq_state, <<0:8, _:6, Two_bits:2/integer, _/binary>> = B, Metadata, none = Stmt) 
                                 when ((Two_bits =:= 0) orelse (Two_bits =:= 1)) and (RS_seq_state > 1) ->
-	[Field_metadata | _ ] = Metadata#metadata.field_metadata,
-	Flags = helper_common:parse_data_flags(Field_metadata#field_metadata.flags),
-	io:format("~n  --$-- >>>parse_server_response_packet: state=~p packet body=~128p Stmt=~p~n Metadata= ~128p~n Flags=~128p~n", [RS_seq_state, B, Stmt, Metadata, Flags]),
+%% 	[Field_metadata | _ ] = Metadata#metadata.field_metadata,
+%% 	Flags = helper_common:parse_data_flags(Field_metadata#field_metadata.flags),
+%% 	io:format("~n  --$-- >>>parse_server_response_packet: state=~p packet body=~128p Stmt=~p~n Metadata= ~128p~n Flags=~128p~n", [RS_seq_state, B, Stmt, Metadata, Flags]),
 %	<<_:8, B1/binary>> = B,
 	packet_parser_binary:parse_binary_row(B, Metadata); % Binary Row Data packet
-%% parse_server_response_packet(RS_seq_state, <<0:8, _/binary>> = B, Metadata, none = Stmt) when RS_seq_state > 1 ->
-%%   parse_result_packet(RS_seq_state, B, Metadata, Stmt);
+parse_server_response_packet(RS_seq_state, <<0:8, _/binary>> = B, Metadata, none = Stmt) when RS_seq_state > 1 ->
+  parse_result_packet(RS_seq_state, B, Metadata, Stmt);
 
 parse_server_response_packet(_RS_seq_state, <<0:8, _/binary>> = B, Metadata, fetch) ->
   packet_parser_binary:parse_binary_row(B, Metadata); % Binary Row Data packet
